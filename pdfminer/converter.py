@@ -37,7 +37,7 @@ from .layout import LTTextLine
 from .pdfdevice import PDFTextDevice
 from .pdffont import PDFFont
 from .pdffont import PDFUnicodeNotDefined
-from .pdfinterp import PDFGraphicState, PDFResourceManager
+from .pdfinterp import PDFGraphicState, PDFTextState, PDFResourceManager
 from .pdfpage import PDFPage
 from .pdftypes import PDFStream
 from .utils import AnyIO, Point, Matrix, Rect, PathSegment, make_compat_str
@@ -69,7 +69,7 @@ class PDFLayoutAnalyzer(PDFTextDevice):
         (x0, y0) = apply_matrix_pt(ctm, (x0, y0))
         (x1, y1) = apply_matrix_pt(ctm, (x1, y1))
         mediabox = (0, 0, abs(x0 - x1), abs(y0 - y1))
-        self.cur_item = LTPage(self.pageno, mediabox)
+        self.cur_item = LTPage(self.pageno, mediabox, doc = page.doc)
 
     def end_page(self, page: PDFPage) -> None:
         assert not self._stack, str(len(self._stack))
@@ -206,6 +206,7 @@ class PDFLayoutAnalyzer(PDFTextDevice):
         cid: int,
         ncs: PDFColorSpace,
         graphicstate: PDFGraphicState,
+        textstate: PDFTextState
     ) -> float:
         try:
             text = font.to_unichr(cid)
@@ -225,6 +226,7 @@ class PDFLayoutAnalyzer(PDFTextDevice):
             textdisp,
             ncs,
             graphicstate,
+            textstate
         )
         self.cur_item.add(item)
         return item.adv

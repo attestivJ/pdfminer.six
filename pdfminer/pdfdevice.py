@@ -89,7 +89,7 @@ class PDFDevice:
         textstate: "PDFTextState",
         seq: PDFTextSeq,
         ncs: PDFColorSpace,
-        graphicstate: "PDFGraphicState",
+        graphicstate: "PDFGraphicState"
     ) -> None:
         pass
 
@@ -128,6 +128,7 @@ class PDFTextDevice(PDFDevice):
                 dxscale,
                 ncs,
                 graphicstate,
+                textstate
             )
         else:
             textstate.linematrix = self.render_string_horizontal(
@@ -143,6 +144,7 @@ class PDFTextDevice(PDFDevice):
                 dxscale,
                 ncs,
                 graphicstate,
+                textstate
             )
 
     def render_string_horizontal(
@@ -159,6 +161,7 @@ class PDFTextDevice(PDFDevice):
         dxscale: float,
         ncs: PDFColorSpace,
         graphicstate: "PDFGraphicState",
+        textstate: "PDFTextState"
     ) -> Point:
         (x, y) = pos
         needcharspace = False
@@ -179,6 +182,7 @@ class PDFTextDevice(PDFDevice):
                         cid,
                         ncs,
                         graphicstate,
+                        textstate
                     )
                     if cid == 32 and wordspace:
                         x += wordspace
@@ -199,6 +203,7 @@ class PDFTextDevice(PDFDevice):
         dxscale: float,
         ncs: PDFColorSpace,
         graphicstate: "PDFGraphicState",
+        textstate: "PDFTextState"
     ) -> Point:
         (x, y) = pos
         needcharspace = False
@@ -219,6 +224,7 @@ class PDFTextDevice(PDFDevice):
                         cid,
                         ncs,
                         graphicstate,
+                        textstate
                     )
                     if cid == 32 and wordspace:
                         y += wordspace
@@ -235,6 +241,7 @@ class PDFTextDevice(PDFDevice):
         cid: int,
         ncs: PDFColorSpace,
         graphicstate: "PDFGraphicState",
+        textstate: "PDFTextState"
     ) -> float:
         return 0
 

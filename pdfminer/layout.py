@@ -19,7 +19,9 @@ from .pdfcolor import PDFColorSpace
 from .pdffont import PDFFont
 from .pdfinterp import Color
 from .pdfinterp import PDFGraphicState
+from .pdfinterp import PDFTextState
 from .pdftypes import PDFStream
+from .pdfdocument import PDFDocument
 from .utils import INF
 from .utils import LTComponentT
 from .utils import Matrix
@@ -350,6 +352,7 @@ class LTChar(LTComponent, LTText):
         textdisp: Union[float, Tuple[Optional[float], float]],
         ncs: PDFColorSpace,
         graphicstate: PDFGraphicState,
+        textstate: PDFTextState
     ) -> None:
         LTText.__init__(self)
         self._text = text
@@ -357,6 +360,7 @@ class LTChar(LTComponent, LTText):
         self.fontname = font.fontname
         self.ncs = ncs
         self.graphicstate = graphicstate
+        self.textstate = textstate
         self.adv = textwidth * fontsize * scaling
         # compute the boundary rectangle.
         if font.is_vertical():
@@ -1015,10 +1019,11 @@ class LTPage(LTLayoutContainer):
     LTCurve and LTLine.
     """
 
-    def __init__(self, pageid: int, bbox: Rect, rotate: float = 0) -> None:
+    def __init__(self, pageid: int, bbox: Rect, rotate: float = 0, doc: PDFDocument = None) -> None:
         LTLayoutContainer.__init__(self, bbox)
         self.pageid = pageid
         self.rotate = rotate
+        self.doc = doc
         return
 
     def __repr__(self) -> str:
