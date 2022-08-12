@@ -152,7 +152,7 @@ def dumpoutline(
     extractdir: Optional[str] = None,
 ) -> None:
     fp = open(fname, "rb")
-    parser = PDFParser(fp)
+    parser = PDFParser(fp, fname)
     doc = PDFDocument(parser, password)
     pages = {
         page.pageid: pageno
@@ -233,7 +233,7 @@ def extractembedded(fname: str, password: str, extractdir: str) -> None:
         return
 
     with open(fname, "rb") as fp:
-        parser = PDFParser(fp)
+        parser = PDFParser(fp, fname)
         doc = PDFDocument(parser, password)
         extracted_objids = set()
         for xref in doc.xrefs:
@@ -261,7 +261,7 @@ def dumppdf(
     show_fallback_xref: bool = False,
 ) -> None:
     fp = open(fname, "rb")
-    parser = PDFParser(fp)
+    parser = PDFParser(fp, fname)
     doc = PDFDocument(parser, password)
     if objids:
         for objid in objids:
