@@ -195,7 +195,7 @@ def extract_pages(
         device = PDFPageAggregator(resource_manager, laparams=laparams)
         interpreter = PDFPageInterpreter(resource_manager, device)
         for page in PDFPage.get_pages(
-            fp, page_numbers, maxpages=maxpages, password=password, caching=caching
+            fp, page_numbers, maxpages=maxpages, password=password, caching=caching, filename=pdf_file
         ):
             interpreter.process_page(page)
             layout = device.get_result()

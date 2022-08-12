@@ -248,7 +248,7 @@ class PDFContentParser(PSStackParser[Union[PSKeyword, PDFStream]]):
         # PSStackParser.__init__(fp=None) is safe only because we've overloaded
         # all the methods that would attempt to access self.fp without first
         # calling self.fillfp().
-        PSStackParser.__init__(self, None)  # type: ignore[arg-type]
+        PSStackParser.__init__(self, None, "")  # type: ignore[arg-type]
 
     def fillfp(self) -> None:
         if not self.fp:

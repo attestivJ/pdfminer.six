@@ -144,9 +144,10 @@ class PDFPage:
         password: str = "",
         caching: bool = True,
         check_extractable: bool = False,
+        filename: str = ""
     ) -> Iterator["PDFPage"]:
         # Create a PDF parser object associated with the file object.
-        parser = PDFParser(fp)
+        parser = PDFParser(fp, filename)
         # Create a PDF document object that stores the document structure.
         doc = PDFDocument(parser, password=password, caching=caching)
         # Check if the document allows text extraction.

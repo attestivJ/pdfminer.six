@@ -20,6 +20,7 @@ from typing import (
 
 from . import settings
 from .utils import choplist
+from typing import cast
 
 log = logging.getLogger(__name__)
 
@@ -188,8 +189,9 @@ class PSBaseParser:
 
     BUFSIZ = 4096
 
-    def __init__(self, fp: BinaryIO) -> None:
+    def __init__(self, fp: BinaryIO, filename: str) -> None:
         self.fp = fp
+        self.filename = filename
         self.seek(0)
 
     def __repr__(self) -> str:
@@ -200,6 +202,7 @@ class PSBaseParser:
 
     def close(self) -> None:
         self.flush()
+        self.fp.close()
         return
 
     def tell(self) -> int:
@@ -217,6 +220,8 @@ class PSBaseParser:
     def seek(self, pos: int) -> None:
         """Seeks the parser to the given position."""
         log.debug("seek: %r", pos)
+        if self.fp.closed:
+            self.fp = cast(BinaryIO, open(self.filename, 'rb'))
         self.fp.seek(pos)
         # reset the status for nextline()
         self.bufpos = pos
@@ -541,8 +546,8 @@ PSStackEntry = Tuple[int, PSStackType[ExtraT]]
 
 
 class PSStackParser(PSBaseParser, Generic[ExtraT]):
-    def __init__(self, fp: BinaryIO) -> None:
-        PSBaseParser.__init__(self, fp)
+    def __init__(self, fp: BinaryIO, filename: str) -> None:
+        PSBaseParser.__init__(self, fp, filename)
         self.reset()
         return
 
